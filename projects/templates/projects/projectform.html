@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Main Section -->
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            
+            <br>
+
+            <form class="form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- ... -->
+                
+                <div class="form__field">
+                    <label for="formInput#text">Nom:</label>
+                    {{ form.nom }}
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Prénom:</label>
+                    {{ form.prenom }}
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Email:</label>
+                    {{ form.email }}
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Contenu:</label>
+                    {{ form.contenu }}
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Etat:</label>
+                    <input type="text" id="etat" name="etat" value="En attente" readonly>
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Avis:</label>
+                    <input type="text" id="avis" name="avis" value="En attente d'avis" readonly>
+                    
+                </div>
+                <!-- ... -->
+              <style>
+                .btn-save {
+                background-color: #B546FB ; 
+                color: white;
+                
+            }
+            .btn-cancel{
+                background-color:#800bc7;
+                color: white;}
+        </style>
+                <input class="btn btn--sub btn--lg my-md btn-save" type="submit" value="Save Changes" />
+                <input class="btn btn-primary btn--lg my-md btn-cancel" onclick="window.location.href='{% url 'projects' %}'" type="button" value="GoBack">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

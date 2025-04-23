@@ -1,0 +1,172 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="staticfiles/admin/css/projects.css">
+<!-- Main Section -->
+<main class="projects">
+    <section class="hero-section text-center">
+        <div class="container container--narrow">
+            <div class="hero-section__box">
+                <h2>Search for <span>Reclamations</span></h2>
+            </div>
+        </div>
+    </section>
+
+    &nbsp;&nbsp;&nbsp;<h1>Formulaire</h1>
+    <style>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        th, td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+          background-color: #f2f2f2;
+        }
+      </style>
+
+    <form method="post" action="{% url 'save_form' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+        &nbsp;&nbsp;&nbsp; <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom"><br><br>
+        </div>
+
+        <div class="form-group">
+        &nbsp;&nbsp;&nbsp;<label for="prenom">Prénom:</label>
+        <input type="text" id="prenom" name="prenom"><br><br>
+        </div>
+
+        <div class="form-group">
+        &nbsp;&nbsp;&nbsp;<label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        </div>
+        
+        <style>
+            .form-group {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px; /* Ajoute un espace vertical entre les paires */
+            }
+            
+            .form-group label {
+                margin-right: 10px; /* Ajoute un espace horizontal entre le libellé et le champ de saisie */
+            }
+
+
+
+        </style>
+        &nbsp;&nbsp;&nbsp;<button class="btn btn--sub btn--lg my-md" type="submit">Save</button>
+    </form>
+    <div class="search-bar">
+        &nbsp;&nbsp;&nbsp;<input class="input input--text search-input" type="text" id="recherche" placeholder="Reasearch For Reclamations...">
+    <input class="btn btn--sub btn--lg my-md" type="submit" onclick="rechercher()" value="Search">
+    
+    <input class="btn btn--sub btn--lg my-md" id="Cancel"  type="button" value="Cancel">
+    </div>
+    <style>
+       
+    
+        .search-input {
+            width: 70%;
+            max-width: 600px; /* Ajustez la valeur selon vos besoins */
+        }
+    </style>
+    <script>
+        document.getElementById("Cancel").addEventListener("click", function() {
+            window.location.href = "{% url 'projects' %}";
+        });
+    </script>
+    <script>
+        function rechercher() {
+            var input = document.getElementById("recherche").value.toLowerCase();
+            var table = document.getElementById("table-enregistrements");
+            var rows = table.getElementsByTagName("tr");
+    
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                var cells = row.getElementsByTagName("td");
+                var found = false;
+    
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell) {
+                        var text = cell.innerText || cell.textContent;
+                        if (text.toLowerCase().indexOf(input) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+    
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        }
+    </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              var deleteForm = document.getElementById('delete-form');
+              deleteForm.addEventListener('submit', function(event) {
+                var confirmation = confirm("Are you sure you want to delete this?");
+                if (!confirmation) {
+                  event.preventDefault(); // Empêche l'envoi du formulaire si l'utilisateur annule
+                }
+              });
+            });
+          </script>
+    
+    
+    <table id="table-enregistrements" style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            {% for enregistrement in enregistrements %}
+                <tr>
+                
+                    <td>{{ enregistrement.nom }}</td>
+                    <td>{{ enregistrement.prenom }}</td>
+                    <td>{{ enregistrement.email }}</td>
+                    <td>
+                    
+                        <!-- Ajoutez ici les boutons Modifier/Supprimer -->
+                        
+                        {% csrf_token%}
+                      
+                       
+                        
+                    
+
+                       
+                      
+                        
+                        <input class="btn btn--sub btn--lg my-md" onclick="window.location.href='{% url 'update_enregistrement' id=enregistrement.id  %}'" type="button" value="Modify">
+                        <input class="btn btn--sub btn--lg my-md" onclick="window.location.href='{% url 'delete_enregistrement' id=enregistrement.id %}'" type="button" value="Delete">
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include 'pagination.html' with queryset=projects custom_range=custom_range %}
+</main>
+{% endblock %}

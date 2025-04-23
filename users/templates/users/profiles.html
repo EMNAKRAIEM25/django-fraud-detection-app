@@ -1,0 +1,410 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Main Section -->
+<main class="home" >
+    <section class="hero-section text-center"style="background-color: white;">
+        <div class="container container--narrow" >
+            <div class="hero-section__box">
+                <span style="color: #000000;"><h2>CONNECT WITH US </h2>
+                </span>
+            </div>
+            
+            <div class="hero-section__search">
+
+                <form id="searchForm" class="form" action="{% url 'profiles' %}" method="get">
+                    <div class="form__field">
+                        <label for="formInput#search">Search </label>
+                        <input class="input input--text search-input" id="formInput#search" type="text" name="search_query"
+                            value="{{search_query}}" placeholder="Search" />
+                    
+
+                    <input class="btn btn--sub btn--lg my-md btn-search" type="submit" value="Search" />
+                    <input  class="btn btn-primary btn--lg my-md btn-cancel" id="Cancel"  type="button" value="Cancel">
+                </div>
+                
+                    <script>
+                        document.getElementById("Cancel").addEventListener("click", function() {
+                            window.location.href = "{% url 'profiles' %}";
+                        });
+                    </script>
+                
+                
+                </form>
+
+            </div>
+        </div>
+        
+    </section>
+    <!-- Search Result: DevList -->
+    <section class="devlist">
+        <div class="container">
+            <div class="grid grid--three">
+
+                {% for profile in profiles %}
+                <div class="column card">
+                    <div class="dev">
+                        <a href="{% url 'user-profile' profile.id %}" class="card__body">
+                            <div class="dev__profile">
+                                <img class="avatar avatar--md" src="{{ profile.imageURL }}" alt="image" />
+                                <div class="dev__meta">
+                                    <h3>{{profile.name}}</h3>
+                                    <h5>{{profile.short_intro|slice:"60"}}</h5>
+                                </div>
+                            </div>
+                            <p class="dev__info">{{profile.bio|slice:"150"}}</p>
+                            <div class="dev__skills">
+
+                                {% for skill in profile.skill_set.all|slice:"5" %}
+                                <span class="tag tag--pill tag--main">
+                                    <small>{{skill}}</small>
+                                </span>
+                                {% endfor %}
+
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+    <style>
+        .btn-search {
+            background-color: #0066CC;
+            color: white;
+        }
+    
+        .btn-cancel {
+            background-color: #0099CC;
+            color: white;
+        }
+    
+        .hero-section h2 span {
+            color: #FFFFFF; /* Blanc */
+        }
+    
+        .search-input {
+            width: 70%;
+            max-width: 600px; /* Ajustez la valeur selon vos besoins */
+        }
+        .chatbot-messages {
+            padding: 10px;
+          }
+          .chatbot-container {
+            text-align: right; /* Ajouter cette ligne */
+          }
+          
+          .user-message,
+          .chatbot-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            display: inline-block;
+            max-width: 80%;
+            color: #000;
+            backdrop-filter: blur(50px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.3);
+            line-height: 1.5;
+            transition: transform 0.5s;
+          }
+          
+          .chatbot-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgb(122, 82, 82);
+            margin-left: auto; /* Modifier cette ligne */
+            margin-right: 0;
+            font-size: 1.7rem;
+          }
+          
+          .chatbot-messages .user-message {
+            background-color: #e9ebee;
+          }
+          
+          .chatbot-messages .chatbot-message {
+            background-color: #0084ff;
+            color: white;
+          }
+          /* Styles pour le bouton d'envoi du chatbot */
+          .chatbot-input-container button {
+            background-color: #000080;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+          }
+          .chatbot-input {
+            width: 15%;
+            padding: 8px;
+            border: none;
+            border-top: 1px solid #ccc;
+            outline: none;
+          }
+          .btn-modify {
+            background-color: #000080; 
+            color: white;
+        }
+       
+    </style>
+  
+    <form method="post" action="{% url 'profiles' %}">
+        {% csrf_token %}
+       
+        <div class="chatbot-container">
+            <div class="chatbot-messages">
+              <div class="user-message">User: Hi, how can you help me?</div><br>
+              <div class="chatbot-message">ChatBot: Hello! I'm here to assist you.</div><br>
+              <!-- Ajoutez d'autres messages ici -->
+            </div>
+            <div class="chatbot-input-container">
+                <select  name="user_input" id="user_input">
+                    <option value="" disabled selected>Select an option</option>
+                    
+                    <option value="help">help</option>
+                    <option value="security measures">Security Measures?</option>
+                    <option value="fraud detection">Fraud Detection?</option>
+                    <option value="report fraud">report fraud?</option>
+                    <option value="transaction history">transaction history?</option>
+                    <option value="contact information">contact information?</option>
+                    <option value="password reset">Password Reset?</option>
+                    <option value="account balance ">account balance? </option>
+                    <option value="transfer funds ">transfer funds </option>
+                    <option value="mobile banking ">mobile banking? </option>
+                    <option value="interest rates ?">interest rates?</option>
+                    <option value="credit card application">credit card application?</option>
+                    <option value="loan options">loan options?</option>
+                    <option value="ATM locations">ATM locations?</option>
+                    <option value="online banking registration">online banking registration?</option>
+                    <option value="account statement">account statement?</option>
+                    <option value="credit limit increase ">credit limit increase? </option>
+                    <option value="comment sécuriser mon compte en ligne ">comment sécuriser mon compte en ligne? </option>
+                    <option value="comment mettre à jour mes informations personnelles ">comment mettre à jour mes informations personnelles?</option>
+                    <option value="comment ajouter un bénéficiaire pour les transferts de fonds">comment ajouter un bénéficiaire pour les transferts de fonds?</option>
+                    <option value="comment annuler un virement ou une transaction">comment annuler un virement ou une transaction?</option>
+                    <option value="quels sont les frais associés à mon compte">quels sont les frais associés à mon compte?</option>
+                    <option value="comment contester une transaction non autorisée">comment contester une transaction non autorisée?</option>
+                    <option value="comment bloquer une carte en cas de perte ou de vol">comment bloquer une carte en cas de perte ou de vol?</option>
+                    <option value="comment télécharger mes relevés bancaires en format PDF">comment télécharger mes relevés bancaires en format PDF?</option>
+                    <option value="Comment ouvrir un compte bancaire ?">Comment ouvrir un compte bancaire ?</option>
+                    <option value="Quelles sont les options de paiement disponibles ?">Quelles sont les options de paiement disponibles ?</option>
+                    <option value="Comment obtenir un prêt hypothécaire ?">Comment obtenir un prêt hypothécaire ?</option>
+                    <option value="Quels sont les avantages d'une carte de crédit ?">Quels sont les avantages d'une carte de crédit ?</option>
+                    <option value="Comment déposer de l'argent sur mon compte en ligne ?">Comment déposer de l'argent sur mon compte en ligne ?</option>
+                    <option value="Comment activer une carte de crédit ?">Comment activer une carte de crédit ?</option>
+                    <option value="Quelle est la limite de retrait quotidienne d'un guichet automatique ?">Quelle est la limite de retrait quotidienne d'un guichet automatique ?</option>
+                    <option value="Comment vérifier le solde d'un compte par téléphone ?">Comment vérifier le solde d'un compte par téléphone ?</option>
+                    <option value="Comment ajouter un nouvel utilisateur au système ?">Comment ajouter un nouvel utilisateur au système ?</option>
+                    <option value="Comment réinitialiser le mot de passe d'un utilisateur ?">Comment réinitialiser le mot de passe d'un utilisateur ?</option>
+                    <option value="Comment supprimer un utilisateur du système ?">Comment supprimer un utilisateur du système ?</option>
+                    <option value="Comment générer un rapport d'activité du système ?">Comment générer un rapport d'activité du système ?</option>
+                    <option value="Comment effectuer une sauvegarde des données du système ?">Comment effectuer une sauvegarde des données du système ?</option>
+                    <option value="Comment configurer les autorisations d'accès pour les utilisateurs ?">Comment configurer les autorisations d'accès pour les utilisateurs ?</option>
+                    <option value="Comment suivre les performances du système ?">Comment suivre les performances du système ?</option>
+                    <option value="Comment gérer les problèmes de performance du système ?">Comment gérer les problèmes de performance du système ?</option>
+                    <option value="Comment assurer la sécurité des données sensibles ?">Comment assurer la sécurité des données sensibles ?</option>
+                    <option value="Comment gérer les autorisations d'accès pour les différentes équipes ?">Comment gérer les autorisations d'accès pour les différentes équipes ?</option>
+                    <option value="Comment planifier des sauvegardes régulières des données ?">Comment planifier des sauvegardes régulières des données ?</option>
+                    <option value="Comment surveiller les journaux d'activité du système ?">Comment surveiller les journaux d'activité du système ?</option>
+                    <option value="Quels sont les avantages de l'authentification à deux facteurs ?">Quels sont les avantages de l'authentification à deux facteurs ?</option>
+                    <option value="Comment mettre à jour mes coordonnées bancaires ?">Comment mettre à jour mes coordonnées bancaires ?</option>
+                    <option value="Quelles sont les fonctionnalités disponibles dans l'application mobile ?">Quelles sont les fonctionnalités disponibles dans l'application mobile ?</option>
+                    <option value="Comment contacter le service clientèle en dehors des heures d'ouverture ?">Comment contacter le service clientèle en dehors des heures d'ouverture ?</option>
+                    <option value="Puis-je ouvrir un compte bancaire en ligne ?">Puis-je ouvrir un compte bancaire en ligne ?</option>
+                    <option value="Quels sont les types de cartes de crédit que vous proposez ?">Quels sont les types de cartes de crédit que vous proposez ?</option>
+                    <option value="Est-ce que vous offrez des services de planification financière ?">Est-ce que vous offrez des services de planification financière ?</option>
+                    <option value="Comment mettre à jour ma limite de retrait ?">Comment mettre à jour ma limite de retrait ?</option>
+                    <option value="Quelles sont les options de paiement disponibles pour les prêts ?">Quelles sont les options de paiement disponibles pour les prêts ?</option>
+                    <option value="Comment fonctionne le processus de remboursement d'un prêt ?">Comment fonctionne le processus de remboursement d'un prêt ?</option>
+                    <option value="Comment demander un prêt personnel ?">Comment demander un prêt personnel ?</option>
+                    <option value="Quelles sont les conditions pour ouvrir un compte d'épargne ?">Quelles sont les conditions pour ouvrir un compte d'épargne ?</option>
+                    <option value="Comment puis-je annuler un virement que j'ai effectué par erreur ?">Comment puis-je annuler un virement que j'ai effectué par erreur ?</option>
+                    <option value="Qu'est-ce qu'un taux d'intérêt nominal ?">Qu'est-ce qu'un taux d'intérêt nominal ?</option>
+                    <option value="Comment puis-je demander un relevé de compte papier ?">Comment puis-je demander un relevé de compte papier ?</option>
+                    <option value="Qu'est-ce qu'un prélèvement automatique ?">Qu'est-ce qu'un prélèvement automatique ?</option>
+                    <option value="Quels sont les systèmes utilisés pour la détection de la fraude ?">Quels sont les systèmes utilisés pour la détection de la fraude ?</option>
+                    <option value="Comment puis-je signaler une activité suspecte ou une fraude ?">Comment puis-je signaler une activité suspecte ou une fraude ?</option>
+                    <option value="Comment puis-je protéger mes informations personnelles contre la fraude en ligne ?">Comment puis-je protéger mes informations personnelles contre la fraude en ligne ?</option>
+                    <option value="Comment votre banque gère-t-elle les risques liés aux prêts ?">Comment votre banque gère-t-elle les risques liés aux prêts ?</option>
+                    <option value="Quelles mesures votre banque prend-elle pour atténuer les risques de fraude en ligne ?">Quelles mesures votre banque prend-elle pour atténuer les risques de fraude en ligne ?</option>
+                    <option value="Comment puis-je signaler une vulnérabilité de sécurité ?">Comment puis-je signaler une vulnérabilité de sécurité ?</option>
+                    <option value="Quels sont les indicateurs utilisés pour la détection de la fraude ?">Quels sont les indicateurs utilisés pour la détection de la fraude ?</option>
+                    <option value="Comment puis-je protéger mes cartes de débit et de crédit contre la fraude ?">Comment puis-je protéger mes cartes de débit et de crédit contre la fraude ?</option>
+                    <option value="Comment votre banque détecte-t-elle les activités frauduleuses ?">Comment votre banque détecte-t-elle les activités frauduleuses ?</option>
+                    <option value="Quelles sont les mesures de sécurité pour protéger les comptes en ligne ?">Quelles sont les mesures de sécurité pour protéger les comptes en ligne ?</option>
+                    <option value="Comment puis-je signaler une tentative de phishing ?">Comment puis-je signaler une tentative de phishing ?</option>
+                    <option value="Quels sont les signes d'une activité frauduleuse sur mon compte ?">Quels sont les signes d'une activité frauduleuse sur mon compte ?</option>
+                    <option value="Comment puis-je protéger mes informations de connexion ?">Comment puis-je protéger mes informations de connexion ?</option>
+                    <option value="Quelles sont les procédures de vérification pour les transactions suspectes ?">Quelles sont les procédures de vérification pour les transactions suspectes ?</option>
+                    <option value="Quelles sont les mesures prises pour prévenir la fraude en ligne ?">Quelles sont les mesures prises pour prévenir la fraude en ligne ?</option>
+                    <option value="Comment votre banque évalue-t-elle les risques liés aux transactions internationales ?">Comment votre banque évalue-t-elle les risques liés aux transactions internationales ?</option>
+                    <option value="Comment puis-je signaler un faux site web ou une escroquerie en ligne ?">Comment puis-je signaler un faux site web ou une escroquerie en ligne ?</option>
+                    <option value="Quels sont les mécanismes de sauvegarde des données pour assurer la continuité des opérations en cas d'incident ?">Quels sont les mécanismes de sauvegarde des données pour assurer la continuité des opérations en cas d'incident ?</option>
+                    <option value="Comment votre banque gère-t-elle les risques de fraude liés aux cartes de crédit ?">Comment votre banque gère-t-elle les risques de fraude liés aux cartes de crédit ?</option>
+                    <option value="Quels sont les signes d'une activité frauduleuse sur ma carte de crédit ?">Quels sont les signes d'une activité frauduleuse sur ma carte de crédit ?</option>
+                    <option value="Quelles mesures de sécurité sont en place pour protéger ma carte de crédit contre la fraude ?">Quelles mesures de sécurité sont en place pour protéger ma carte de crédit contre la fraude ?</option>
+                    <option value="Comment puis-je signaler une transaction frauduleuse sur ma carte de crédit ?">Comment puis-je signaler une transaction frauduleuse sur ma carte de crédit ?</option>
+                    <option value="Quelles sont les procédures de remboursement en cas de fraude sur ma carte de crédit ?">Quelles sont les procédures de remboursement en cas de fraude sur ma carte de crédit ?</option>
+                    <option value="Comment puis-je protéger ma carte de crédit contre la fraude en ligne ?">Comment puis-je protéger ma carte de crédit contre la fraude en ligne ?</option>
+                    <option value="Comment puis-je activer ou désactiver les fonctionnalités de sécurité de ma carte de crédit ?">Comment puis-je activer ou désactiver les fonctionnalités de sécurité de ma carte de crédit ?</option>
+                    <option value="Quelles sont les pratiques recommandées pour protéger ma carte de crédit lors de voyages ?">Quelles sont les pratiques recommandées pour protéger ma carte de crédit lors de voyages ?</option>
+                    <option value="Comment puis-je mettre en place des alertes de transaction pour ma carte de crédit ?">Comment puis-je mettre en place des alertes de transaction pour ma carte de crédit ?</option>
+                    <option value="Quelles sont les mesures prises pour détecter les cartes de crédit contrefaites ?">Quelles sont les mesures prises pour détecter les cartes de crédit contrefaites ?</option>
+                    <option value="Quelles sont les mesures prises pour prévenir la fraude sur les transactions en ligne avec ma carte de crédit ?">Quelles sont les mesures prises pour prévenir la fraude sur les transactions en ligne avec ma carte de crédit ?</option>
+                    <option value="Comment puis-je mettre en place des alertes de fraude pour ma carte de crédit ?">Comment puis-je mettre en place des alertes de fraude pour ma carte de crédit ?</option>
+                    <option value="Quels sont les processus de vérification utilisés lors d'une demande de carte de crédit pour réduire les risques de fraude ?">Quels sont les processus de vérification utilisés lors d'une demande de carte de crédit pour réduire les risques de fraude ?</option>
+                    <option value="Comment puis-je signaler un e-mail ou un message suspect prétendant provenir de ma banque ?">Comment puis-je signaler un e-mail ou un message suspect prétendant provenir de ma banque ?</option>
+                    <option value="Comment puis-je protéger mes informations de carte de crédit lorsque j'effectue des achats en ligne ?">Comment puis-je protéger mes informations de carte de crédit lorsque j'effectue des achats en ligne ?</option>
+                    <option value="Quelles sont les mesures prises pour protéger mes informations de carte de crédit contre les violations de données ?">Quelles sont les mesures prises pour protéger mes informations de carte de crédit contre les violations de données ?</option>
+                    <option value="Quels sont les facteurs pris en compte lors de l'évaluation du risque de fraude sur une transaction de carte de crédit ?">Quels sont les facteurs pris en compte lors de l'évaluation du risque de fraude sur une transaction de carte de crédit ?</option>
+                    <option value="Comment puis-je mettre à jour mes informations de contact pour recevoir des alertes de fraude ?">Comment puis-je mettre à jour mes informations de contact pour recevoir des alertes de fraude ?</option>
+                    <option value="Quelles sont les procédures de surveillance en place pour détecter les activités frauduleuses sur les cartes de crédit ?">Quelles sont les procédures de surveillance en place pour détecter les activités frauduleuses sur les cartes de crédit ?</option>
+                    <option value="Comment puis-je activer ou désactiver la fonctionnalité de paiement sans contact sur ma carte de crédit ?">Comment puis-je activer ou désactiver la fonctionnalité de paiement sans contact sur ma carte de crédit ?</option>
+                    <option value="Quels sont les modèles de fraude les plus courants associés aux cartes de crédit ?">Quels sont les modèles de fraude les plus courants associés aux cartes de crédit ?</option>
+                    <option value="Quelles sont les méthodes de prévention de la fraude utilisées pour protéger les titulaires de cartes de crédit ?">Quelles sont les méthodes de prévention de la fraude utilisées pour protéger les titulaires de cartes de crédit ?</option>
+                    <option value="Comment la technologie d'apprentissage automatique est-elle utilisée pour la détection de la fraude sur les cartes de crédit ?">Comment la technologie d'apprentissage automatique est-elle utilisée pour la détection de la fraude sur les cartes de crédit ?</option>
+                    <option value="Quels sont les facteurs pris en compte lors de l'évaluation du risque de fraude sur une transaction en temps réel ?">Quels sont les facteurs pris en compte lors de l'évaluation du risque de fraude sur une transaction en temps réel ?</option>
+                    <option value="Quels sont les protocoles de sécurité utilisés pour la transmission des données de carte de crédit lors d'une transaction en ligne ?">Quels sont les protocoles de sécurité utilisés pour la transmission des données de carte de crédit lors d'une transaction en ligne ?</option>
+                    <option value="Comment les données de transaction sont-elles analysées pour détecter les schémas de fraude ?">Comment les données de transaction sont-elles analysées pour détecter les schémas de fraude ?</option>
+                    <option value="Quelles sont les mesures prises pour protéger les informations de carte de crédit stockées dans la base de données ?">Quelles sont les mesures prises pour protéger les informations de carte de crédit stockées dans la base de données ?</option>
+                    <option value="Comment pouvez-vous garantir la confidentialité des informations de carte de crédit lors de leur traitement ?">Comment pouvez-vous garantir la confidentialité des informations de carte de crédit lors de leur traitement ?</option>
+                    <option value="Quelles sont les étapes suivies en cas de détection d'une transaction frauduleuse ?">Quelles sont les étapes suivies en cas de détection d'une transaction frauduleuse ?</option>
+                    <option value="Comment puis-je signaler une transaction frauduleuse sur ma carte de crédit ?">Comment puis-je signaler une transaction frauduleuse sur ma carte de crédit ?</option>
+                    <option value="Qu'est-ce que le marché boursier ?">Qu'est-ce que le marché boursier ?</option>
+                    <option value="Qu'est-ce qu'un taux d'intérêt ?">Qu'est-ce qu'un taux d'intérêt ?</option>
+                    <option value="Qu'est-ce que l'investissement en actions ?">Qu'est-ce que l'investissement en actions ?</option>
+                    <option value="Qu'est-ce que l'analyse financière ?">Qu'est-ce que l'analyse financière ?</option>
+                    <option value="Qu'est-ce qu'un fonds commun de placement ?">Qu'est-ce qu'un fonds commun de placement ?</option>
+                    <option value="Qu'est-ce qu'un compte d'épargne ?">Qu'est-ce qu'un compte d'épargne ?</option>
+                    <option value="Qu'est-ce qu'une obligation ?">Qu'est-ce qu'une obligation ?</option>
+                    <option value="Qu'est-ce qu'un indice boursier ?">Qu'est-ce qu'un indice boursier ?</option>
+                    <option value="Qu'est-ce qu'un plan de retraite ?">Qu'est-ce qu'un plan de retraite ?</option>
+                    <option value="Qu'est-ce qu'une option d'achat (call) ?">Qu'est-ce qu'une option d'achat (call) ?</option>
+                    <option value="Qu'est-ce qu'un fonds d'investissement alternatif ?">Qu'est-ce qu'un fonds d'investissement alternatif ?</option>
+                    <option value="Qu'est-ce que l'effet de levier financier ?">Qu'est-ce que l'effet de levier financier ?</option>
+                    <option value="Qu'est-ce que l'analyse des flux de trésorerie ?">Qu'est-ce que l'analyse des flux de trésorerie ?</option>
+                    <option value="Qu'est-ce que la gestion de portefeuille ?">Qu'est-ce que la gestion de portefeuille ?</option>
+                    <option value="Qu'est-ce que l'indice de performance financière (IPF) ?">Qu'est-ce que l'indice de performance financière (IPF) ?</option>
+                    <option value="Qu'est-ce que la volatilité du marché ?">Qu'est-ce que la volatilité du marché ?</option>
+                    <option value="Qu'est-ce qu'un plan financier personnel ?">Qu'est-ce qu'un plan financier personnel ?</option>
+                    <option value="Qu'est-ce qu'une société de gestion d'actifs ?">Qu'est-ce qu'une société de gestion d'actifs ?</option>
+                    <option value="Qu'est-ce que l'arbitrage financier ?">Qu'est-ce que l'arbitrage financier ?</option>
+                    <option value="Qu'est-ce que le ratio cours/bénéfice (P/E) ?">Qu'est-ce que le ratio cours/bénéfice (P/E) ?</option>
+                    <option value="Qu'est-ce qu'une stratégie d'allocation d'actifs ?">Qu'est-ce qu'une stratégie d'allocation d'actifs ?</option>
+                    <option value="Qu'est-ce qu'un marché financier ?">Qu'est-ce qu'un marché financier ?</option>
+                    <option value="Qu'est-ce qu'un compte de courtage ?">Qu'est-ce qu'un compte de courtage ?</option>
+                    <option value="Qu'est-ce que l'analyse technique ?">Qu'est-ce que l'analyse technique ?</option>
+                    <option value="Qu'est-ce qu'une option de vente (put) ?">Qu'est-ce qu'une option de vente (put) ?</option>
+                    <option value="Qu'est-ce qu'un fonds négocié en bourse (ETF) ?">Qu'est-ce qu'un fonds négocié en bourse (ETF) ?</option>
+                    <option value="Qu'est-ce que la gestion des risques financiers ?">Qu'est-ce que la gestion des risques financiers ?</option>
+                    <option value="Qu'est-ce que l'indice boursier ?">Qu'est-ce que l'indice boursier ?</option>
+                    <option value="Qu'est-ce qu'une obligation d'État ?">Qu'est-ce qu'une obligation d'État ?</option>
+                    <option value="Qu'est-ce qu'une stratégie de couverture ?">Qu'est-ce qu'une stratégie de couverture ?</option>
+                    <option value="Qu'est-ce que l'analyse fondamentale ?">Qu'est-ce que l'analyse fondamentale ?</option>
+                    <option value="Qu'est-ce qu'un contrat à terme ?">Qu'est-ce qu'un contrat à terme ?</option>
+                    <option value="Qu'est-ce que l'efficience des marchés financiers ?">Qu'est-ce que l'efficience des marchés financiers ?</option>
+                    <option value="Qu'est-ce que l'analyse des coûts-volumes-profits ?">Qu'est-ce que l'analyse des coûts-volumes-profits ?</option>
+                    <option value="Qu'est-ce que la gestion du capital de travail ?">Qu'est-ce que la gestion du capital de travail ?</option>
+                    <option value="Qu'est-ce que la titrisation ?">Qu'est-ce que la titrisation ?</option>
+                    <option value="Qu'est-ce que la planification successorale ?">Qu'est-ce que la planification successorale ?</option>
+                    <option value="Qu'est-ce que le ratio de solvabilité ?">Qu'est-ce que le ratio de solvabilité ?</option>
+                    <option value="Qu'est-ce qu'un swap de devises ?">Qu'est-ce qu'un swap de devises ?</option>
+                    <option value="Qu'est-ce que la finance comportementale ?">Qu'est-ce que la finance comportementale ?</option>
+                    <option value="Qu'est-ce qu'une obligation à taux variable ?">Qu'est-ce qu'une obligation à taux variable ?</option>
+                    <option value="Qu'est-ce qu'un revenu fixe ?">Qu'est-ce qu'un revenu fixe ?</option>
+                    <option value="Qu'est-ce qu'un plan de retraite ?">Qu'est-ce qu'un plan de retraite ?</option>
+                    <option value="Qu'est-ce qu'un actif financier ?">Qu'est-ce qu'un actif financier ?</option>
+                    <option value="Qu'est-ce qu'un investissement à revenu variable ?">Qu'est-ce qu'un investissement à revenu variable ?</option>
+                    <option value="Qu'est-ce qu'un indice de référence ?">Qu'est-ce qu'un indice de référence ?</option>
+                    <option value="Qu'est-ce qu'une société d'investissement ?">Qu'est-ce qu'une société d'investissement ?</option>
+                    <option value="Qu'est-ce qu'un marché primaire ?">Qu'est-ce qu'un marché primaire ?</option>
+                    <option value="Qu'est-ce qu'une analyse de rentabilité ?">Qu'est-ce qu'une analyse de rentabilité ?</option>
+                    <option value="Qu'est-ce qu'une société de gestion d'actifs ?">Qu'est-ce qu'une société de gestion d'actifs ?</option>
+                    <option value="Qu'est-ce que l'allocation d'actifs ?">Qu'est-ce que l'allocation d'actifs ?</option>
+                    <option value="Qu'est-ce qu'une obligation convertible ?">Qu'est-ce qu'une obligation convertible ?</option>
+                    <option value="Qu'est-ce que l'effet de levier financier ?">Qu'est-ce que l'effet de levier financier ?</option>
+                    <option value="Qu'est-ce qu'un compte de démonstration en trading ?">Qu'est-ce qu'un compte de démonstration en trading ?</option>
+                    <option value="Qu'est-ce que la valeur nominale ?">Qu'est-ce que la valeur nominale ?</option>
+                    <option value="Qu'est-ce qu'un indice boursier ?">Qu'est-ce qu'un indice boursier ?</option>
+                    <option value="Qu'est-ce qu'une société de capital-risque ?">Qu'est-ce qu'une société de capital-risque ?</option>
+                    <option value="Qu'est-ce qu'une opération sur titres ?">Qu'est-ce qu'une opération sur titres ?</option>
+                    <option value="Qu'est-ce que la gestion de patrimoine ?">Qu'est-ce que la gestion de patrimoine ?</option>
+                    <option value="Qu'est-ce que la diversification de portefeuille ?">Qu'est-ce que la diversification de portefeuille ?</option>
+                    <option value="Qu'est-ce qu'un produit dérivé ?">Qu'est-ce qu'un produit dérivé ?</option>
+                    <option value="Qu'est-ce que la gestion passive ?">Qu'est-ce que la gestion passive ?</option>
+                    <option value="Qu'est-ce qu'une action préférentielle ?">Qu'est-ce qu'une action préférentielle ?</option>
+                    <option value="Qu'est-ce que l'effet de levier opérationnel ?">Qu'est-ce que l'effet de levier opérationnel ?</option>
+                    <option value="Qu'est-ce qu'une option d'achat d'actions (stock option) ?">Qu'est-ce qu'une option d'achat d'actions (stock option) ?</option>
+                    <option value="Qu'est-ce qu'un indice de volatilité ?">Qu'est-ce qu'un indice de volatilité ?</option>
+                    <option value="Qu'est-ce qu'un actif non liquide ?">Qu'est-ce qu'un actif non liquide ?</option>
+                    <option value="Qu'est-ce que le risque de change ?">Qu'est-ce que le risque de change ?</option>
+                    <option value="Qu'est-ce qu'un ordre de marché ?">Qu'est-ce qu'un ordre de marché ?</option>
+                    <option value="Qu'est-ce qu'un indice des prix à la consommation (IPC) ?">Qu'est-ce qu'un indice des prix à la consommation (IPC) ?</option>
+                    <option value="Qu'est-ce que l'analyse technique ?">Qu'est-ce que l'analyse technique ?</option>
+                    <option value="Qu'est-ce qu'une offre publique initiale (IPO) ?">Qu'est-ce qu'une offre publique initiale (IPO) ?</option>
+                    <option value="Qu'est-ce qu'un taux d'intérêt nominal ?">Qu'est-ce qu'un taux d'intérêt nominal ?</option>
+                    <option value="Qu'est-ce que la planification financière ?">Qu'est-ce que la planification financière ?</option>
+                    <option value="Qu'est-ce qu'une obligation à coupon zéro ?">Qu'est-ce qu'une obligation à coupon zéro ?</option>
+                    <option value="Qu'est-ce que la création monétaire ?">Qu'est-ce que la création monétaire ?</option>
+                    <option value="Qu'est-ce que le trading sur marge ?">Qu'est-ce que le trading sur marge ?</option>
+                    <option value="Qu'est-ce que la valeur temps ?">Qu'est-ce que la valeur temps ?</option>
+                    <option value="Qu'est-ce qu'une fusion-acquisition ?">Qu'est-ce qu'une fusion-acquisition ?</option>
+                    <option value="Qu'est-ce qu'un prêt hypothécaire ?">Qu'est-ce qu'un prêt hypothécaire ?</option>
+                    <option value="Qu'est-ce que l'indice de confiance des consommateurs ?">Qu'est-ce que l'indice de confiance des consommateurs ?</option>
+                    <option value="Qu'est-ce que la fiscalité des entreprises ?">Qu'est-ce que la fiscalité des entreprises ?</option>
+                    <option value="Qu'est-ce qu'une banque d'investissement ?">Qu'est-ce qu'une banque d'investissement ?</option>
+                    <option value="Qu'est-ce qu'un indice boursier ?">Qu'est-ce qu'un indice boursier ?</option>
+                    <option value="Qu'est-ce qu'une obligation convertie en actions ?">Qu'est-ce qu'une obligation convertie en actions ?</option>
+                    <option value="Qu'est-ce que l'évaluation d'entreprise ?">Qu'est-ce que l'évaluation d'entreprise ?</option>
+                    <option value="Qu'est-ce que la gestion de trésorerie ?">Qu'est-ce que la gestion de trésorerie ?</option>
+                    <option value="Qu'est-ce qu'une société anonyme (SA) ?">Qu'est-ce qu'une société anonyme (SA) ?</option>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+                    <!-- Ajoutez d'autres options ici -->
+                </select>
+                
+
+               
+                <button type="submit">Send</button>
+                
+                
+              </div>
+              <div class="chatbot-messages">
+                <div class="user-message">User: {{ user_input }}</div><br>
+                <div class="chatbot-message">ChatBot: {{ response }}</div><br>
+              </div>
+              
+             
+          </form>
+        
+
+    {% include 'pagination.html' with queryset=profiles custom_range=custom_range %}
+</main>
+
+
+{% endblock content %}

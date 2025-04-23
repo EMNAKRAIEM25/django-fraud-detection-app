@@ -1,0 +1,80 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Main Section -->
+<main class="projects"style="background-color: white;">
+    <section class="hero-section text-center"style="background-color: white;">
+        <div class="container container--narrow">
+            <div class="hero-section__box">
+                <h2><span>Are you Searching for Frauds ?</span></h2>
+            </div>
+        </div>
+    </section>
+    <div class="hero-section__search">
+        <form method="post" id="SearchForm" action="{% url 'search' %}">
+            {% csrf_token %}
+            
+            <div class="search-bar">
+                <button style="background-color: transparent; color: #333; font-size: 28px; border: none; cursor: pointer;">
+                    &nbsp;&nbsp;&nbsp; Click Here <span style="font-size: 32px; transform: translateY(3px);">&#10140;</span>
+                </button>
+                &nbsp;&nbsp;&nbsp;<input class="btn btn--sub btn--lg my-md btn-search" type="submit" value="Upload" id="uploadButton">
+                <input class="btn btn-primary btn--lg my-md btn-cancel" id="Cancel" type="button" value="Cancel">
+            </div>
+        </form>
+    </div>
+    {% if email_sent_message %}
+        <p>{{ email_sent_message }}</p>
+        <p>{{ block_account_message }}</p>
+        <p>{{ recommendation_message }}</p>
+        
+    {% endif %}
+    <div class="results-section">
+        
+        <h2>Results:</h2>
+        <div class="results">
+            {% for result in results %}
+            <div class="result">
+                <p>Transaction Number: {{ result.transaction_num }}</p>
+                <p>Account Number: {{ result.account_num }}</p>
+                <p>Transaction Risk: {{ result.transaction_risk }}</p>
+                {% if result.recommendation %}
+                <div class="recommendation">
+                    <h3>⚠⚠⚠ RECOMMENDATION NEEDED ⚠⚠⚠</h3>
+                    {{ result.recommendation|safe }}
+                </div>
+                {% else %}
+                <p>No recommendation available</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+   
+            <style> 
+                .btn-save {
+                background-color: #993366 ; 
+                color: white;
+            }
+            .btn-cancel {
+                background-color: #0099CC; 
+                color: white;
+            }
+
+            .btn-search {
+                background-color: #0066CC; 
+                color: white;
+            }
+            
+            </style>
+            
+
+    </div>
+</div>
+</section>
+
+{% endblock %}

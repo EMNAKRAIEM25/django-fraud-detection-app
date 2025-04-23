@@ -1,0 +1,72 @@
+{% load static %}
+
+<!-- Header Section -->
+<header class="header">
+    <div class="container container--narrow">
+        <a href="{% url 'profiles' %}" class="header__logo" onclick="return false;" oncontextmenu="return false;">
+            <!-- <img src="{% static 'images/LOGO..svg' %} " alt="Datasearch Logo" />-->
+            DataSe<span class="search-icon">&#128269;</span>rch
+            
+        </a>
+
+        <nav class="header__nav" onselectstart="return false;">
+            <input type="checkbox" id="responsive-menu" />
+            <label for="responsive-menu" class="toggle-menu">
+                <span>Menu</span>
+                <div class="toggle-menu__lines"></div>
+            </label>
+            <ul class="header__menu">
+                {% if request.user.is_authenticated %}
+                <li class="header__menuItem"><a href="{% url 'profiles' %}">Profiles</a></li>
+                <li class="header__menuItem"><a href="{% url 'projects' %}">Reclamations</a></li>
+                <li class="header__menuItem"><a href="{% url 'Statistics' %}">Statistics</a></li>
+                <li class="header__menuItem"><a href="{% url 'notebook_view' %}">recommendations</a></li>
+                
+
+
+                
+                <li class="header__menuItem"><a href="{% url 'search' %}">Search</a></li>
+                <li class="header__menuItem"><a href="{% url 'account' %}">Account</a></li>
+                <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Logout</a></li>
+                {% else %}
+                <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
+<style>
+    .header {
+        background-color: #000080; 
+        padding: 20px;
+    }
+</style>
+<style>
+    .header__logo {
+        text-decoration: none;
+        display: inline-block;
+        font-size: 30px;
+        color: gray;
+        margin-left: -60px; /
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        pointer-events: none;
+    }
+    
+    .search-icon {
+        font-family: Arial, sans-serif;
+        font-size: 30px;
+        vertical-align: middle;
+        color: gray;
+        user-select: none;
+    }
+    .subtext {
+        font-size: 14px;
+        color: #666;
+        vertical-align: middle;
+        user-select: none;
+    }
+  
+</style>

@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Main Section -->
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            
+            <br>
+
+            <form class="form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- ... -->
+                <div class="form__field">
+                    <label for="formInput#text">Nom:</label>
+                    {{ form.nom }}
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Prénom:</label>
+                    {{ form.prenom }}
+                </div>
+                <div class="form__field">
+                    <label for="formInput#text">Email:</label>
+                    {{ form.email }}
+                </div>
+                
+             
+                <!-- ... -->
+                <input class="btn btn--sub btn--lg my-md" type="submit" value="Save Changes" />
+                <input class="btn btn--sub btn--lg my-md" onclick="window.location.href='{% url 'projects' %}'" type="button" value="GoBack">
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

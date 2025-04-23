@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Main Section -->
+<main class="projects"style="background-color: white;">
+    <section class="hero-section text-center"style="background-color: white;">
+        <div class="container container--narrow">
+            <div class="hero-section__box">
+                <h2><span>Search for Frauds</span></h2>
+            </div>
+        </div>
+    </section>
+    <div class="hero-section__search">
+
+        <form id="UploadForm">
+            <div class="search-bar">
+                &nbsp;&nbsp;&nbsp;<input class="input input--text search-input" type="text" id="recherche" placeholder="Search For Frauds...">
+                <input class="btn btn--sub btn--lg my-md btn-search" type="submit" onclick="search()" value="Upload">
+                <input  class="btn btn-primary btn--lg my-md btn-cancel" id="Cancel"  type="button" value="Cancel">
+            </div>
+            <style> 
+                .btn-save {
+                background-color: #993366 ; 
+                color: white;
+            }
+            .btn-cancel {
+                background-color: #0099CC; 
+                color: white;
+            }
+
+            .btn-search {
+                background-color: #0066CC; 
+                color: white;
+            }
+            </style>
+            <script>
+                document.getElementById("Cancel").addEventListener("click", function() {
+                    window.location.href = "{% url 'profiles' %}";
+                });
+            </script>
+        </form>
+
+    </div>
+</div>
+</section>
+

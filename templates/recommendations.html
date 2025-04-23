@@ -1,0 +1,151 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="staticfiles/admin/css/projects.css">
+<!-- Main Section -->
+<main class="projects"style="background-color: white;">
+    <section class="hero-section text-center"style="background-color: white;">
+        <div class="container container--narrow">
+            <div class="hero-section__box">
+                <h2><span>Search for Recommendations</span></h2>
+            </div>
+        </div>
+    </section>
+<html>
+<head>
+    <title>Items similaires</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        .item-content {
+            margin: 20px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .item h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .item p {
+            margin-bottom: 10px;
+        }
+        
+        .item a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+        
+        .item a:hover {
+            text-decoration: underline;
+        }
+        .btn-search {
+            background-color: #0066CC; 
+            color: white;
+        }
+        .search-input {
+            width: 70%;
+            max-width: 600px; /* Ajustez la valeur selon vos besoins */
+        }
+        /* Style du formulaire */
+.form-container label {
+  font-weight: bold;
+}
+
+.form-container input {
+  font-size: 16px;
+  padding: 5px;
+}
+
+/* Style du contenu */
+.item-content p.item-heading {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.item-content p.description {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.item-content h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.item-content p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.item-content a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.item-content hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+    </style>
+</head>
+<body>
+    
+
+    <form  action="{% url 'notebook_view' %}" method="GET">
+        {% csrf_token %}
+
+        &nbsp;&nbsp;&nbsp;<label class="description" class="form-container" for="item_id">Choisissez un ID :</label>
+        &nbsp;&nbsp;&nbsp;<input class="input input--text search-input" type="number" id="item_id" name="item_id">
+        <input class="btn btn--sub btn--lg my-md btn-search"type="submit" value="Afficher les résultats">
+    </form>
+    <div class="item-content" class="form-container">
+    {% if item_desc %}
+    &nbsp;&nbsp;&nbsp;<p class="item-heading"><strong>Formation found in the database, description below:</strong></p>
+        <p class="description" >{{ item_desc }}</p>
+        <h3>{{ item_desc.name }}</h3>
+        <p>{{ item_desc.about }}</p>
+        <p>Rating: {{ item_rating }}</p>
+        <p><a href="{{ item_desc.link }}">Voir le lien</a></p>
+        
+        <hr>
+    {% endif %}
+
+    {% if result %}
+        <p><strong>Based on the analysis of the descriptions, you might also be interested in the following descriptions:</strong></p>
+        {% for item in result %}
+            <div class="item">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.about }}</p>
+                <p>Rating: {{ item.rating }}</p>
+                <p><a href="{{ item.link }}">Voir le lien</a></p>
+            </div>
+        {% endfor %}
+    {% else %}
+        {% if item_id %}
+            <p>Aucun résultat trouvé pour l'ID {{ item_id }}.</p>
+        {% else %}
+            <p>Aucun ID spécifié.</p>
+        {% endif %}
+    {% endif %}
+    </div>
+</body>
+</html>
+</main>
+{% endblock %}

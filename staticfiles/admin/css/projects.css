@@ -1,0 +1,9 @@
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+}
+
+.search-input {
+    width: 70%;
+    max-width: 400px; /* Ajustez la valeur selon vos besoins */}

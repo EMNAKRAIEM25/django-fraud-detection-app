@@ -1,0 +1,188 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+    <!-- Autres balises <head> -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="staticfiles/admin/css/projects.css">
+<!-- Main Section -->
+<main class="projects"style="background-color: white;">
+    <section class="hero-section text-center"style="background-color: white;">
+        <div class="container container--narrow"style="background-color: white;">
+            <div class="hero-section__box"style="background-color: white;">
+                <h2><span>Looking for Statistics ?</span></h2>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+
+
+<div class="pie-charts"style="background-color: white;">
+    <div class="chart-container"style="background-color: white;">
+      {{ chart_pie|safe }}
+    </div>
+    <div class="chart-container"style="background-color: white;">
+      {{ chart_pie1|safe }}
+    </div>
+    <div class="chart-container"style="background-color: white;">
+        {{ chart_pie2|safe }}
+    </div>
+</div>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Formation Data Table</h5>
+                    <div class="table-container"style="border-collapse: collapse; background-color: #F3E5F5; color: #555; max-height: 400px;font-weight: bold; font-size: 14px; overflow-y: auto;">
+                        {{ table_html|safe }}
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Users Data Table</h5>
+                    <div class="table-container"style="border-collapse: collapse; background-color: #F3E5F5; color: #555; max-height: 400px; font-weight: bold; ; font-size: 14px;; overflow-y: auto;">
+                            {{ table_html1|safe }}
+                    
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Ajoutez ce code où vous souhaitez afficher le bar chart -->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Insérez ici le code pour le premier bar chart (fraud-chart) -->
+            <div class="card">
+                <div class="card-body">
+                    <div id="fraud-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Insérez ici le code pour le pie chart animé -->
+            <div class="card">
+                <div class="card-body">
+                    
+                    <div id="pie-chart"></div>
+                </div>
+            </div>
+        </div>
+        
+    
+</div>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-5">
+            <!-- Insérez ici le code pour le deuxième bar chart (category-chart) -->
+            <div class="card">
+                <div class="card-body">
+                    <div id="category-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <!-- Insérez ici le conteneur pour le graphique en ligne -->
+            <div class="card">
+                <div class="card-body">
+                    <div id="line-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <script>
+        // Récupérez les données JSON du graphique depuis la variable "line_chart"
+        var lineChartData = {{ line_chart | safe }};
+    
+        // Créez le graphique en ligne à l'aide de Plotly
+        Plotly.newPlot('line-chart', lineChartData.data, lineChartData.layout);
+    </script>
+
+<!-- Ajoutez le script pour afficher le pie chart animé -->
+<script>
+// Récupérez les données JSON du pie chart depuis la variable "chart_json_pie"
+var pieChartData = {{ chart_json_pie | safe }};
+
+// Créez le pie chart animé en utilisant Plotly.js
+Plotly.newPlot('pie-chart', pieChartData, {});
+
+// Mettez à jour le layout pour ajouter l'animation
+var layoutUpdate = {
+'transition': {
+    'duration': 1000, // Durée de l'animation en millisecondes
+    'easing': 'bounce' // Type d'animation (vous pouvez utiliser 'linear', 'quad', 'cubic', etc.)
+}
+};
+Plotly.update('pie-chart', {}, layoutUpdate);
+</script>
+<style>
+.pie-charts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+        gap: 50px; /* Adjust the gap between charts as needed */
+    }
+    
+    .chart-container {
+      background-color: white;
+      margin-bottom: 20px;
+      padding: 20px;
+      border: 1px solid #f2f2f2;
+      border-radius: 5px;
+     
+  }
+
+    
+
+    .card {
+        margin-bottom: 20px;
+    }
+</style>
+
+<script>
+  // Récupérer les données passées depuis la vue Django
+  const fraudChartData = {{ chart_json | safe }};
+  const categoryChartData = {{ chart_json1 | safe }};
+
+  // Tracer les graphiques
+  Plotly.newPlot('fraud-chart', fraudChartData.data, fraudChartData.layout, {responsive: true});
+  Plotly.newPlot('category-chart', categoryChartData.data, categoryChartData.layout, {responsive: true});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+{% endblock %}
+

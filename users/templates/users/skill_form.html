@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+<!-- Main Section -->
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
+            <br>
+
+            <form class="form" method="POST" action="">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form__field">
+                    <label for="formInput#text"> {{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+
+                <input class="btn btn--sub btn--lg my-md btn-save" type="submit" value="Submit" />
+                <input  class="btn btn-primary btn--lg my-md btn-cancel" id="Cancel"  type="button" value="Cancel">
+            </form>
+            <style> 
+                .btn-save {
+                background-color: #B546FB ; 
+                color: white;
+            }
+            .btn-cancel {
+                background-color: #800bc7; 
+                color: white;
+            }
+        </style>
+        <script>
+            document.getElementById("Cancel").addEventListener("click", function() {
+                window.location.href = "{% url 'account' %}";
+            });
+        </script>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock %}
